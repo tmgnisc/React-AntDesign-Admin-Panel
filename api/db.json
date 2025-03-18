@@ -1,28 +1,28 @@
 {
   "users": [
     {
-      "name": "John Doe",
-      "email": "chyante@gmail.com",
-      "role": "admin",
-      "id": "550e8400-e29b-41d4-a716-446655440000"
+      "id": "805dc73e-26fa-434a-8735-b10a29c38dff",
+      "name": "sonu",
+      "email": "sonu@gmail.com",
+      "role": "User"
     },
     {
-      "id": "660e8400-e29b-41d4-a716-446655440001",
-      "name": "Jane Smith",
-      "email": "jane.smith@example.com",
-      "role": "editor"
+      "id": "c1f6b789-a3e6-4344-b0e9-adcf7b75076c",
+      "name": "sudip dai",
+      "email": "sudipdondai@gmail.com",
+      "role": "Editor"
     },
     {
-      "id": "770e8400-e29b-41d4-a716-446655440002",
-      "name": "Alice Johnson",
-      "email": "alice.johnson@example.com",
-      "role": "user"
+      "id": "847d2d0e-2052-4719-9c33-541e5e0ee60d",
+      "name": "sanjiv",
+      "email": "sanjiv@gmail.com",
+      "role": "Editor"
     },
     {
-      "id": "880e8400-e29b-41d4-a716-446655440003",
-      "name": "Bob Brown",
-      "email": "bob.brown@example.com",
-      "role": "user"
+      "id": "bc8caed1-827d-4415-a2cc-bea6fd466600",
+      "name": "saurav",
+      "email": "bot@gmail.com",
+      "role": "Admin"
     }
   ]
 }

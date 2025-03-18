@@ -1,8 +1,25 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Table, Button, Space } from "antd";
+import { Table, Button, Space, Modal } from "antd";
 
 const UserList = ({ users, loading, handleDelete }) => {
   const navigate = useNavigate();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const showDeleteConfirm = (userID) => {
+    setSelectedUserId(userID);
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    handleDelete(selectedUserId);
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const columns = [
     {
@@ -34,7 +51,11 @@ const UserList = ({ users, loading, handleDelete }) => {
             Edit
           </Button>
 
-          <Button type="primary" danger onClick={() => handleDelete(record.id)}>
+          <Button
+            type="primary"
+            danger
+            onClick={() => showDeleteConfirm(record.id)}
+          >
             Delete
           </Button>
         </Space>
@@ -59,6 +80,22 @@ const UserList = ({ users, loading, handleDelete }) => {
         pagination={{ pageSize: 5 }}
         loading={loading}
       />
+
+      <Modal
+        title="Confirm Deletion"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Yes, Delete"
+        okType="danger"
+        cancelText="No, Cancel"
+        centered
+      >
+        <p>
+          Are you sure you want to delete this user? This action cannot be
+          undone.
+        </p>
+      </Modal>
     </div>
   );
 };

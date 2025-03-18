@@ -23,20 +23,26 @@ const UserSettings = () => {
       });
   }, []);
 
+  const handleDelete = async (userID) => {
+    try {
+      await axios.delete(`http://localhost:4000/users/${userID}`);
 
-const handleDelete = async (userID) =>{
-  try {
-    await axios.delete(`http://localhost:4000/users/${userId}`)
-    setUsers(users.filter(user => user.id !== userID))
-    console.log("user deleted with id", userId)
-  } catch (error) {
-    console.error(error)
-  }
-}
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userID));
+
+      console.log("User deleted with ID:", userID);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
 
   return (
     <div className="p-4">
-      <UserList users={users} setUsers={setUsers} loading={loading} handleDelete={handleDelete}/>
+      <UserList
+        users={users}
+        setUsers={setUsers}
+        loading={loading}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };
