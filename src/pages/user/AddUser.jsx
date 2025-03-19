@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Form, Input, Select, Button } from "antd";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
+import { addUser, updateUser } from "../../utils/AddUser.utils";
 
 const { Option } = Select;
 
@@ -23,29 +23,25 @@ const AddUser = ({ users, setUsers }) => {
   }, [id, users, form]);
 
   const handleSubmit = async (values) => {
-    if (isEditing) {
-      // Edit existing user
-      try {
-        await axios.put(`http://localhost:4000/users/${id}`, values);
+    try {
+      if (isEditing) {
+        // Update user
+        await updateUser(id, values);
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.id.toString() === id ? { ...user, ...values } : user
           )
         );
-      } catch (error) {
-        console.error("Error updating user:", error);
-      }
-    } else {
-      // Add new user
-      try {
+      } else {
+        // Add new user
         const newUser = { id: uuidv4(), ...values };
-        await axios.post("http://localhost:4000/users", newUser);
+        await addUser(newUser);
         setUsers((prevUsers) => [...prevUsers, newUser]);
-      } catch (error) {
-        console.error("Error adding user:", error);
       }
+      navigate("/admin/settings");
+    } catch (error) {
+      console.error("Error saving user:", error);
     }
-    navigate("/admin/settings");
   };
 
   return (

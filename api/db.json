@@ -23,6 +23,12 @@
       "name": "saurav",
       "email": "bot@gmail.com",
       "role": "Admin"
+    },
+    {
+      "id": "5dec21d2-5b44-4237-9014-79dd688dcad8",
+      "name": "test suser",
+      "email": "user@gmail.com",
+      "role": "User"
     }
   ]
 }
