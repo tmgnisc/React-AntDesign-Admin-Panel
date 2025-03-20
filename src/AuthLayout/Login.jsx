@@ -4,7 +4,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Form, Input, Button, Card } from "antd";
 import { useUser } from "../context/UserContext";
-
 import { fetchUsers } from "../utils/api";
 
 const Login = () => {
@@ -16,7 +15,10 @@ const Login = () => {
     setLoading(true);
   
     try {
+      // Fetch users from API
       const users = await fetchUsers();
+      
+      // Find the user from the fetched users
       const foundUser = users.find(
         (user) =>
           user.email.trim().toLowerCase() === values.email.trim().toLowerCase() &&
@@ -26,7 +28,11 @@ const Login = () => {
       if (foundUser) {
         toast.success("Login Successful", { autoClose: 1500 });
   
-        loginUser(foundUser); 
+        // Save the user in context and localStorage
+        loginUser(foundUser);  // This updates the context
+  
+        // Store user in localStorage for persistence
+        localStorage.setItem("user", JSON.stringify(foundUser));
   
         setTimeout(() => {
           navigate("/admin/dashboard");
@@ -41,8 +47,7 @@ const Login = () => {
     }
   };
   
-  
-  
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card title="Login" className="w-96 shadow-lg">
