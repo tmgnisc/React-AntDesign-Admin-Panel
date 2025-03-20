@@ -3,39 +3,56 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Form, Input, Button, Card } from "antd";
+import { useUser } from "../context/UserContext";
+
+import { fetchUsers } from "../utils/api";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { loginUser } = useUser();
 
-  const handleLogin = (values) => {
-    const { username, password } = values;
-
-    if (username === "admin" && password === "admin") {
-      toast.success("Login Success", { autoClose: 2000 });
-      setLoading(true);
-      
-      
-      localStorage.setItem("isAuthenticated", "true");
-
-      setTimeout(() => {
-        navigate("/admin/dashboard");
-      }, 2000);
-    } else {
-      toast.error("Invalid credentials", { autoClose: 2000 });
+  const handleLogin = async (values) => {
+    setLoading(true);
+  
+    try {
+      const users = await fetchUsers();
+      const foundUser = users.find(
+        (user) =>
+          user.email.trim().toLowerCase() === values.email.trim().toLowerCase() &&
+          user.password === values.password
+      );
+  
+      if (foundUser) {
+        toast.success("Login Successful", { autoClose: 1500 });
+  
+        loginUser(foundUser); 
+  
+        setTimeout(() => {
+          navigate("/admin/dashboard");
+        }, 1500);
+      } else {
+        toast.error("Invalid credentials", { autoClose: 2000 });
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error("Error logging in");
+      setLoading(false);
     }
   };
-
+  
+  
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card title="Login" className="w-96 shadow-lg">
         <Form layout="vertical" onFinish={handleLogin}>
           <Form.Item
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: "Please enter your username!" }]}
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Please enter your email!" }]}
           >
-            <Input placeholder="Enter username" />
+            <Input placeholder="Enter email" />
           </Form.Item>
 
           <Form.Item

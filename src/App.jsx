@@ -11,9 +11,11 @@ import NotFound from "./pages/NotFound";
 import UserList from "./pages/user/UserList";
 import UserDetails from "./pages/user/UserDetails";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
   return (
+    <UserProvider>
     <Router>
       <Routes>
         {/* Public Routes */}
@@ -37,6 +39,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
+    </UserProvider>
   );
 }
 
