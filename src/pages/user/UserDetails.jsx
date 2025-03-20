@@ -1,26 +1,29 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchUserDetails } from "../../utils/UserDetails.utils"; 
+import { fetchUserDetails } from "../../utils/api"; 
 
 const UserDetails = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    fetchUserDetails(id)
-      .then((data) => {
+    const getUserDetails = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchUserDetails(id);
         setUser(data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching user details:", error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    getUserDetails();
   }, [id]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="p-4 text-center">Loading...</div>;
 
   return (
     <div className="p-4">
@@ -33,7 +36,7 @@ const UserDetails = () => {
           <p><strong>Role:</strong> {user.role}</p>
         </div>
       ) : (
-        <p>User not found</p>
+        <p className="text-red-500">User not found</p>
       )}
     </div>
   );

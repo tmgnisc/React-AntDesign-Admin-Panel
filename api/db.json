@@ -4,31 +4,36 @@
       "id": "805dc73e-26fa-434a-8735-b10a29c38dff",
       "name": "sonu",
       "email": "sonu@gmail.com",
-      "role": "User"
+      "role": "User",
+      "password": "password123"
     },
     {
       "id": "c1f6b789-a3e6-4344-b0e9-adcf7b75076c",
       "name": "sudip dai",
       "email": "sudipdondai@gmail.com",
-      "role": "Editor"
+      "role": "Editor",
+      "password": "password123"
     },
     {
       "id": "847d2d0e-2052-4719-9c33-541e5e0ee60d",
       "name": "sanjiv",
       "email": "sanjiv@gmail.com",
-      "role": "Editor"
+      "role": "Editor",
+      "password": "password123"
     },
     {
       "id": "bc8caed1-827d-4415-a2cc-bea6fd466600",
       "name": "saurav",
       "email": "bot@gmail.com",
-      "role": "Admin"
+      "role": "Admin",
+      "password": "password123"
     },
     {
       "id": "5dec21d2-5b44-4237-9014-79dd688dcad8",
       "name": "test suser",
       "email": "user@gmail.com",
-      "role": "User"
+      "role": "User",
+      "password": "password123"
     }
   ]
 }

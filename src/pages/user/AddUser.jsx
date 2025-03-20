@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Form, Input, Select, Button } from "antd";
 import { v4 as uuidv4 } from "uuid";
-import { addUser, updateUser } from "../../utils/AddUser.utils";
+import { addUser, updateUser } from "../../utils/api"; 
 
 const { Option } = Select;
 

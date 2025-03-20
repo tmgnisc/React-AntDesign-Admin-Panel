@@ -10,12 +10,14 @@ const Login = () => {
 
   const handleLogin = (values) => {
     const { username, password } = values;
-    console.log("Username:", username);
-    console.log("Password:", password);
 
     if (username === "admin" && password === "admin") {
       toast.success("Login Success", { autoClose: 2000 });
       setLoading(true);
+      
+      
+      localStorage.setItem("isAuthenticated", "true");
+
       setTimeout(() => {
         navigate("/admin/dashboard");
       }, 2000);

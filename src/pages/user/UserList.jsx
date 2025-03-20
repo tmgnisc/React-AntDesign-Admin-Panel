@@ -1,11 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, Button, Space, Modal } from "antd";
+import { fetchUsers, deleteUser } from "../../utils/api";
 
-const UserList = ({ users, loading, handleDelete }) => {
+const UserList = () => {
   const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
+
+  // Fetch users when component mounts
+  useEffect(() => {
+    setLoading(true);
+    fetchUsers()
+      .then((data) => {
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  // Handle user deletion
+  const handleDelete = async (id) => {
+    try {
+      await deleteUser(id);
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
 
   const showDeleteConfirm = (userID) => {
     setSelectedUserId(userID);
@@ -28,10 +55,7 @@ const UserList = ({ users, loading, handleDelete }) => {
       key: "name",
       align: "center",
       render: (_, record) => (
-        <Button
-          type="link"
-          onClick={() => navigate(`/user-details/${record.id}`)}
-        >
+        <Button type="link" onClick={() => navigate(`/user-details/${record.id}`)}>
           {record.name}
         </Button>
       ),
@@ -44,18 +68,10 @@ const UserList = ({ users, loading, handleDelete }) => {
       align: "center",
       render: (_, record) => (
         <Space size="middle">
-          <Button
-            type="default"
-            onClick={() => navigate(`/admin/edit-user/${record.id}`)}
-          >
+          <Button type="default" onClick={() => navigate(`/admin/edit-user/${record.id}`)}>
             Edit
           </Button>
-
-          <Button
-            type="primary"
-            danger
-            onClick={() => showDeleteConfirm(record.id)}
-          >
+          <Button type="primary" danger onClick={() => showDeleteConfirm(record.id)}>
             Delete
           </Button>
         </Space>
@@ -91,10 +107,7 @@ const UserList = ({ users, loading, handleDelete }) => {
         cancelText="No, Cancel"
         centered
       >
-        <p>
-          Are you sure you want to delete this user? This action cannot be
-          undone.
-        </p>
+        <p>Are you sure you want to delete this user? This action cannot be undone.</p>
       </Modal>
     </div>
   );

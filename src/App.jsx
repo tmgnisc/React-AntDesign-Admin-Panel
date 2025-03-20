@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
 
 import AuthLayout from "./AuthLayout/AuthLayout";
 import MainLayout from "./MainLayout/MainLayout";
@@ -12,42 +10,28 @@ import Login from "./AuthLayout/Login";
 import NotFound from "./pages/NotFound";
 import UserList from "./pages/user/UserList";
 import UserDetails from "./pages/user/UserDetails";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  // Fetch users from API
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get("http://localhost:4000/users")
-      .then((response) => {
-        setUsers(Array.isArray(response.data) ? response.data : []);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
-        setLoading(false);
-      });
-  }, []);
-
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
         </Route>
 
+        {/* Private Routes - Wrapped with ProtectedRoute */}
         <Route element={<MainLayout />}>
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/users" element={<UserList users={users} loading={loading} />} />
-          <Route path="/admin/settings" element={<UserSettings users={users} setUsers={setUsers} loading={loading} />} />
-          <Route path="/admin/add-user" element={<AddUser users={users} setUsers={setUsers} />} />
-          <Route path="/admin/edit-user/:id" element={<AddUser users={users} setUsers={setUsers} />} />
-          <Route path="/user-details/:id" element={<UserDetails />} />
-          <Route path="/admin/logout" element={<Logout />} />
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
+          <Route path="/admin/settings" element={<ProtectedRoute><UserSettings /></ProtectedRoute>} />
+          <Route path="/admin/add-user" element={<ProtectedRoute><AddUser /></ProtectedRoute>} />
+          <Route path="/admin/edit-user/:id" element={<ProtectedRoute><AddUser /></ProtectedRoute>} />
+          <Route path="/user-details/:id" element={<ProtectedRoute><UserDetails /></ProtectedRoute>} />
+          <Route path="/admin/logout" element={<ProtectedRoute><Logout /></ProtectedRoute>} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
